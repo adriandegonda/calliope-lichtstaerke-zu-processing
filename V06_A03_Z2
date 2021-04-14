@@ -1,0 +1,31 @@
+//Bei FEHLERMELDUNG: Programm nochmals starten. 
+
+import processing.serial.*;
+
+Serial myPort;
+int val;
+float val2;
+
+void setup() {
+  size(400, 400);
+  printArray(Serial.list());
+  String portName = Serial.list()[3]; // Die Zahl in den eckigen Klammern [ ] muss eventuell noch geändert werden. 
+  myPort = new Serial(this, portName, 115200);
+}
+
+void draw() {
+  background(70);
+  if ( myPort.available() > 0) {
+    val = Integer.parseInt(myPort.readString());
+    println(val);
+  }
+  val2 = map(val, 0, 255, 0, height);
+  if (val2 < height / 3){
+    fill(255, 0, 0);
+  } else if (val2 >= height/3 && val2 < height*2/3){
+    fill(255, 255, 0);
+  } else {
+    fill(0, 255, 0);
+  }
+  rect(0, height-1, width-1, -val2);
+}
